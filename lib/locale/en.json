@@ -1,0 +1,5 @@
+{
+    "APP_TITLE":"Sample Locale APP",
+    "GREETING":"Hi",
+"Listview":["Data Usage", "Voice Usage", "Sms Usage"]
+}
