@@ -39,7 +39,7 @@ class _LoginpageState extends State<Loginpage> {
                 phonecontrol: phonecontrol,
                 passwordcontrol: passwordcontrol);
           } else if (state is Loadedstate) {
-            return const Signup(7);
+            return const Signup();
           } else if (state is Errorstate) {
             return SigninBody(
               usernamecontrol: usernamecontrol,
