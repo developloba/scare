@@ -4,13 +4,14 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scare/bloc/login%20bloc/loginevent.dart';
 import 'package:scare/models/usermodel.dart';
-import 'package:scare/presentation/screens/authenticationpage.dart';
 import 'package:scare/presentation/screens/homepage.dart';
 import 'package:scare/presentation/screens/loginpage.dart';
+import 'package:scare/presentation/screens/numberscreeen.dart';
 import 'package:scare/presentation/utils/constants.dart';
 
 import '../../bloc/login bloc/loginbloc.dart';
 import '../../bloc/login bloc/loginstate.dart';
+import '../components/homepagecomponents/appdarwer.dart';
 import '../components/loginpage_components/datafield.dart';
 
 class Signup extends StatefulWidget {
@@ -36,7 +37,33 @@ class _SignupState extends State<Signup> {
                 passwordcontrol: passwordcontrol,
                 spinner: true);
           } else if (state is Loadedstate) {
-            return Homepage(data: state.data, usernumber: state.data.number);
+            return Scaffold(
+                drawer: AppDrawer(
+                    userdata: state.data,
+                    usernumber: state.number,
+                    drawerText: const [
+                      'Profile & Settings',
+                      'Recharge your Number',
+                      'My Plans',
+                      'My Usage',
+                      'Recahrge History',
+                      'Statement',
+                      'Settings'
+                    ],
+                    drawerIcons: const [
+                      Icons.account_circle,
+                      Icons.currency_exchange,
+                      Icons.aod,
+                      Icons.energy_savings_leaf,
+                      Icons.update,
+                      Icons.label_important,
+                      Icons.settings
+                    ]),
+                body: Homepage(
+                  data: state.data,
+                  usernumber: state.number,
+                  usernanme: state.name,
+                ));
           } else if (state is Errorstate) {
             return Loginbody(
               phonecontrol: phonecontrol,
@@ -124,10 +151,11 @@ class Loginbody extends StatelessWidget {
                         backgroundColor:
                             const Color.fromARGB(255, 244, 139, 54)),
                     onPressed: (() {
-                      print(number);
                       BlocProvider.of<Loginbloc>(context).add(LoginUserEvent(
                           data: Usermodel(
                               number: number, password: passwordcontrol.text)));
+                      passwordcontrol.clear();
+                      phonecontrol.clear();
                     }),
                     child: Text(
                       'Login',
@@ -149,6 +177,31 @@ class Loginbody extends StatelessWidget {
                           context,
                           MaterialPageRoute(builder: (context) {
                             return const Loginpage();
+                          }),
+                        );
+                      },
+                      child: const Text('here',
+                          style: TextStyle(
+                              fontFamily: 'Euclid',
+                              color: Color.fromARGB(255, 244, 139, 54),
+                              fontSize: 18)),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Login with OTP',
+                        style: TextStyle(
+                            fontFamily: 'Pop',
+                            color: Colors.white,
+                            fontSize: 18)),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return const OtpScreen();
                           }),
                         );
                       },

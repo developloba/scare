@@ -23,6 +23,7 @@ class _DatafieldState extends State<Datafield> {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 1.7,
       child: TextField(
+        maxLength: 15,
         obscureText: widget.obsuretext,
         keyboardType: widget.inputype,
         controller: widget.textEditingController,

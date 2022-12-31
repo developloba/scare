@@ -9,6 +9,7 @@ import 'package:scare/presentation/screens/signuppage.dart';
 import 'package:scare/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
 import '../../bloc/sigin bloc/sigin_events.dart';
+import '../components/homepagecomponents/appdarwer.dart';
 import '../components/loginpage_components/datafield.dart';
 
 class Loginpage extends StatefulWidget {
@@ -38,11 +39,7 @@ class _LoginpageState extends State<Loginpage> {
                 phonecontrol: phonecontrol,
                 passwordcontrol: passwordcontrol);
           } else if (state is Loadedstate) {
-            return Homepage(
-              data: state.data,
-              usernanme: state.data.username,
-              usernumber: state.data.number,
-            );
+            return const Signup(7);
           } else if (state is Errorstate) {
             return SigninBody(
               usernamecontrol: usernamecontrol,
@@ -103,15 +100,15 @@ class SigninBody extends StatelessWidget {
                   'Enter details below',
                   style: kmediumstyle,
                 ),
-                Datafield(
-                  textEditingController: usernamecontrol,
-                  hinttext: 'Enter Username Here',
-                ),
-                Datafield(
-                  textEditingController: emailcontrol,
-                  hinttext: 'Enter your email here',
-                  inputype: TextInputType.emailAddress,
-                ),
+                // Datafield(
+                //   textEditingController: usernamecontrol,
+                //   hinttext: 'Enter Username Here',
+                // ),
+                // Datafield(
+                //   textEditingController: emailcontrol,
+                //   hinttext: 'Enter your email here',
+                //   inputype: TextInputType.emailAddress,
+                // ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 1.7,
                   child: IntlPhoneField(
@@ -149,10 +146,11 @@ class SigninBody extends StatelessWidget {
                     onPressed: (() {
                       BlocProvider.of<Siginupbloc>(context).add(CreateUserEvent(
                           data: Usermodel(
-                              username: usernamecontrol.text,
-                              password: passwordcontrol.text,
-                              number: number,
-                              email: emailcontrol.text)));
+                        password: passwordcontrol.text,
+                        number: number,
+                      )));
+                      passwordcontrol.clear();
+                      phonecontrol.clear();
                     }),
                     child: Text(
                       'Sign up',

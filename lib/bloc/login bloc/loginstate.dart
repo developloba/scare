@@ -17,10 +17,13 @@ class Loadingstate extends Loginstate {
 class Loadedstate extends Loginstate {
   final Usermodel data;
   final Authmodel pin;
-  Loadedstate({
-    required this.data,
-    required this.pin,
-  });
+  final String name;
+  final String number;
+  Loadedstate(
+      {required this.data,
+      required this.pin,
+      required this.name,
+      required this.number});
   @override
   List<Object?> get props => throw UnimplementedError();
 }

@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scare/bloc/Appusage%20bloc/app_usage_bloc.dart';
 
 import 'package:scare/bloc/chatroom%20bloc/chatroom_bloc.dart';
 import 'package:scare/data/chatbotrepository.dart';
 import 'package:scare/models/usermodel.dart';
 import 'package:scare/presentation/components/homepagecomponents/opener.dart';
+import 'package:scare/presentation/utils/constants.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../bloc/Appusage bloc/app_usage_state.dart';
+import '../../bloc/graph_bloc/graph_bloc.dart';
+import '../../bloc/graph_bloc/graph_state.dart';
 import '../../bloc/language bloc/language_bloc.dart';
 import '../../bloc/language bloc/language_state.dart';
-import '../components/homepagecomponents/appdarwer.dart';
+import '../../data/userdata.dart';
+import '../components/homepagecomponents/graphcard.dart';
+import '../components/homepagecomponents/userdatagraph.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({
@@ -26,24 +34,6 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  List<String> drawerText = [
-    'Profile & Settings',
-    'Recharge your Number',
-    'My Plans',
-    'My Usage',
-    'Recahrge History',
-    'Statement',
-    'Settings'
-  ];
-  List<IconData> drawerIcons = [
-    Icons.account_circle,
-    Icons.currency_exchange,
-    Icons.aod,
-    Icons.energy_savings_leaf,
-    Icons.update,
-    Icons.label_important,
-    Icons.settings
-  ];
   List<String> pageviewtext = ['Data usage', 'Voice usage', 'Sms usage'];
   TextStyle ktextstyle = const TextStyle(
     fontSize: 20,
@@ -63,6 +53,29 @@ class _HomepageState extends State<Homepage> {
   List plansText = ['Pro special prepaid 2', 'Pro special prepaid 3'];
   List dataText = ['2.0 GB/day', '1.5 GB/day'];
   List validityText = ['84 days', '56days '];
+  List<List<UserData>> userData = [
+    [
+      UserData('Jan', 35),
+      UserData('Feb', 28),
+      UserData('Mar', 34),
+      UserData('Apr', 32),
+      UserData('May', 40)
+    ],
+    [
+      UserData('Jan', 65),
+      UserData('Feb', 48),
+      UserData('Mar', 54),
+      UserData('Apr', 30),
+      UserData('May', 90)
+    ],
+    [
+      UserData('Jan', 25),
+      UserData('Feb', 38),
+      UserData('Mar', 74),
+      UserData('Apr', 36),
+      UserData('May', 55)
+    ],
+  ];
   @override
   void initState() {
     super.initState();
@@ -70,8 +83,15 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    String username = widget.usernanme;
-    String usernumber = widget.usernumber;
+    String usernumber = widget.data.number;
+    getString(String string) {
+      int length = string.length - 4;
+
+      return '*' * length +
+          usernumber
+              .substring((usernumber.length - 4).clamp(0, usernumber.length));
+    }
+
     return BlocProvider(
       create: (context) =>
           ChatroomBloc(RepositoryProvider.of<ChatbotRepository>(context)),
@@ -79,146 +99,145 @@ class _HomepageState extends State<Homepage> {
         child: BlocListener<LanguageBloc, LanguageState>(
           listener: (context, state) {},
           child: Scaffold(
-              appBar: AppBar(
-                leading: Builder(builder: ((context) {
-                  return IconButton(
-                    icon: const Icon(
-                      Icons.menu,
-                      color: Colors.black,
-                      size: 35,
-                    ),
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                    tooltip:
-                        MaterialLocalizations.of(context).openAppDrawerTooltip,
-                  );
-                })),
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Opener(
-                      userid: usernumber,
-                    )
-                  ],
-                ),
-              ),
-              drawer: AppDrawer(
-                  username: username,
-                  usernumber: usernumber,
-                  drawerText: drawerText,
-                  drawerIcons: drawerIcons),
-              backgroundColor: const Color.fromARGB(255, 245, 220, 176),
+              backgroundColor: kbackgroundcolor,
               body: CustomScrollView(slivers: [
                 SliverToBoxAdapter(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 1.6,
+                    height: MediaQuery.of(context).size.height * 2,
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: PageView.builder(
-                                padEnds: false,
-                                controller:
-                                    PageController(viewportFraction: 0.7),
-                                itemCount: pageviewtext.length,
-                                itemBuilder: ((context, index) => Padding(
-                                      padding: const EdgeInsets.only(right: 20),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              30,
-                                            ),
-                                            color: Colors.black),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              pageviewtext[index],
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                fontFamily: 'Pop',
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Image.asset(
-                                              'assets/pngegg.png',
-                                              scale: 3.5,
-                                              fit: BoxFit.contain,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ))),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 50,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: Center(
-                                        child: Text('App Usage',
-                                            style: ktextstylewhitesmall),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 30),
-                                      child: Text(
-                                        'Top Apps in the last 7days',
-                                        style: ktextstyle,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
+                              GestureDetector(
+                                  onTap: (() {
+                                    Scaffold.of(context).openDrawer();
+                                  }),
                                   child: SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Card(
-                                      elevation: 15,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20),
-                                        child: Image.network(
-                                          'https://static.anychart.com/images/gallery/v8/bar-charts-bar-chart.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                      width: 80,
+                                      height: 80,
+                                      child: Image.asset(
+                                        'assets/images/syes-01.png',
+                                        fit: BoxFit.fill,
+                                      ))),
+                              Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Center(
+                                    child: Text(
+                                      widget.usernanme,
+                                      style: ktextstylewhite,
                                     ),
                                   ),
                                 ),
+                              ),
+                              Text(
+                                getString(usernumber),
+                                style: ktextstyle,
                               )
                             ],
                           ),
                         ),
+                        Container(
+                          color: Colors.black,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Mobile',
+                                  style: ktextstylewhite,
+                                ),
+                              ),
+                              Opener(
+                                userid: usernumber,
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                            flex: 2,
+                            child: BlocBuilder<GraphBloc, GraphState>(
+                              builder: (context, state) {
+                                if (state is OnDataState) {
+                                  return UserDataGraph(
+                                      ktextstylewhite: ktextstylewhite,
+                                      selected: state.selected,
+                                      index: state.index,
+                                      data: userData[state.index]);
+                                }
+                                if (state is OnSmsState) {
+                                  return UserDataGraph(
+                                    ktextstylewhite: ktextstylewhite,
+                                    selected: state.selected,
+                                    index: state.index,
+                                    data: userData[state.index],
+                                  );
+                                }
+                                if (state is OnVoiceState) {
+                                  return UserDataGraph(
+                                      ktextstylewhite: ktextstylewhite,
+                                      selected: state.selected,
+                                      index: state.index,
+                                      data: userData[state.index]);
+                                } else {
+                                  return const SizedBox.shrink();
+                                }
+                              },
+                            )),
+                        BlocBuilder<AppUsageBloc, AppUsageState>(
+                          builder: (context, state) {
+                            if (state is OnOpenState) {
+                              return Graphcard(
+                                title: 'Top Apps in the last 7days',
+                                flex: 2,
+                                state: state,
+                                ktextstylewhite: ktextstylewhite,
+                                ktextstyle: ktextstyle,
+                                graph: SfCartesianChart(
+                                    title:
+                                        ChartTitle(textStyle: ktextstylewhite),
+                                    primaryXAxis: CategoryAxis(),
+                                    series: <LineSeries<UserData, String>>[
+                                      LineSeries<UserData, String>(
+                                          dataSource: [
+                                            UserData('Jan', 35),
+                                            UserData('Feb', 28),
+                                            UserData('Mar', 34),
+                                            UserData('Apr', 32),
+                                            UserData('May', 40)
+                                          ],
+                                          xValueMapper: (UserData data, _) =>
+                                              data.year,
+                                          yValueMapper: (UserData data, _) =>
+                                              data.count)
+                                    ]),
+                              );
+                            } else {
+                              return Graphcard(
+                                  title: '',
+                                  state: state,
+                                  flex: 1,
+                                  ktextstyle: ktextstyle,
+                                  ktextstylewhite: ktextstylewhite,
+                                  graph: const SizedBox.shrink());
+                            }
+                          },
+                        ),
                         Flexible(
                           flex: 4,
                           child: Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 20),
                             child: Card(
                               elevation: 15,
                               shape: RoundedRectangleBorder(

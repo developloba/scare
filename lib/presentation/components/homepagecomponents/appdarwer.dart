@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scare/bloc/language%20bloc/langauge_event.dart';
 import 'package:scare/bloc/language%20bloc/language_bloc.dart';
+import 'package:scare/bloc/login%20bloc/loginbloc.dart';
+import 'package:scare/bloc/login%20bloc/loginevent.dart';
 import 'package:scare/locale/language.dart';
+import 'package:scare/models/usermodel.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({
-    Key? key,
-    required this.username,
-    required this.usernumber,
-    required this.drawerText,
-    required this.drawerIcons,
-  }) : super(key: key);
+  const AppDrawer(
+      {Key? key,
+      required this.usernumber,
+      required this.drawerText,
+      required this.drawerIcons,
+      required this.userdata})
+      : super(key: key);
 
-  final String username;
   final String usernumber;
+  final Usermodel userdata;
   final List<String> drawerText;
   final List<IconData> drawerIcons;
 
@@ -49,14 +52,9 @@ class AppDrawer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hello, $username | Prepaid LTE',
+                    'Hello, $usernumber| Prepaid LTE',
                     style: const TextStyle(
                         fontSize: 25, fontFamily: 'Pop', color: Colors.white),
-                  ),
-                  Text(
-                    usernumber,
-                    style: const TextStyle(
-                        fontSize: 20, fontFamily: 'Pop', color: Colors.white),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -167,6 +165,28 @@ class AppDrawer extends StatelessWidget {
                   padding: EdgeInsets.all(8.0),
                   child: Text(
                     'Telugu',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'Pop',
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<Loginbloc>(context)
+                      .add(LogOutUserEvent(token: userdata.token));
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white38,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15))),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Logout',
                     style: TextStyle(
                       fontSize: 15,
                       fontFamily: 'Pop',

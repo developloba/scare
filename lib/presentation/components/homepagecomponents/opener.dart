@@ -17,7 +17,7 @@ class _OpenerState extends State<Opener> {
       icon: const Icon(
         Icons.mic,
         size: 35,
-        color: Colors.black,
+        color: Colors.white,
       ),
       onPressed: () {
         // recordingService.initRecorder();

@@ -10,6 +10,13 @@ class LoginUserEvent extends Loginevent {
   List<Object?> get props => [];
 }
 
+class LogOutUserEvent extends Loginevent {
+  late final String token;
+  LogOutUserEvent({required this.token});
+  @override
+  List<Object?> get props => [];
+}
+
 class Errorevent extends Loginevent {
   @override
   List<Object?> get props => throw UnimplementedError();
