@@ -7,7 +7,7 @@ import 'package:scare/models/messagemodel.dart';
 class ChatroomBloc extends Bloc<Chatroomevent, Chatroomstate> {
   ChatbotRepository repo;
 
-  ChatroomBloc(this.repo) : super(Chatroomstate(messages: [])) {
+  ChatroomBloc(this.repo) : super(ChatroomInitialState(messages: [])) {
     on<Getmessages>((event, emit) => emit(Chatroomstate(messages: [])));
     on<Addmessageevent>((event, emit) async {
       final previousMessages = state.messages;
@@ -18,5 +18,7 @@ class ChatroomBloc extends Bloc<Chatroomevent, Chatroomstate> {
       previousMessages.add(data);
       emit(Chatroomstate(messages: previousMessages));
     });
+    on<InitializeChatevent>(
+        (event, emit) => emit(ChatroomInitialState(messages: [])));
   }
 }

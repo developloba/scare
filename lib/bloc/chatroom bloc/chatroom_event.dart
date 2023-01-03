@@ -14,6 +14,14 @@ class Addmessageevent extends Chatroomevent {
   List<MessageModel?> get props => [messageModel];
 }
 
+class InitializeChatevent extends Chatroomevent {
+  final MessageModel messageModel;
+  InitializeChatevent({required this.messageModel});
+
+  @override
+  List<MessageModel?> get props => [messageModel];
+}
+
 class Getmessages extends Chatroomevent {
   final MessageModel messageModel;
   Getmessages({required this.messageModel});

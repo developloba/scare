@@ -13,7 +13,7 @@ import 'package:scare/models/usermodel.dart';
 import '../models/userdatamodel.dart';
 
 class Userrepository {
-  String baseUrl = 'http://2878-102-91-4-217.eu.ngrok.io';
+  String baseUrl = 'http://e3d1-197-210-226-122.eu.ngrok.io';
   addUsers(Usermodel model) async {
     try {
       Response response = await post(Uri.parse('$baseUrl/addUser/'),
@@ -28,7 +28,7 @@ class Userrepository {
         Signinmodel data = Signinmodel.fromJson(jsonDecode(response.body));
         return data;
       } else if (response.statusCode == 400) {
-        throw jsonDecode(response.body);
+        throw throw ("Incorrect User credentials");
       } else {
         throw response.reasonPhrase!;
       }
@@ -56,7 +56,7 @@ class Userrepository {
 
         return data;
       } else if (response.statusCode == 400) {
-        throw jsonDecode(response.body);
+        throw ("Incorrect User credentials");
       } else {
         throw response.reasonPhrase!;
       }

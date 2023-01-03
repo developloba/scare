@@ -6,6 +6,10 @@ class Chatroomstate {
   Chatroomstate({required this.messages});
 }
 
+class ChatroomInitialState extends Chatroomstate {
+  ChatroomInitialState({required super.messages});
+}
+
 class ChatroomErrorState extends Chatroomstate {
   final List<MessageModel> previousmessages;
   final String error;

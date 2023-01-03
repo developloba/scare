@@ -3,18 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scare/bloc/Appusage%20bloc/app_usage_bloc.dart';
 
 import 'package:scare/bloc/chatroom%20bloc/chatroom_bloc.dart';
+import 'package:scare/bloc/chatroom%20bloc/chatroom_event.dart';
 import 'package:scare/data/chatbotrepository.dart';
+import 'package:scare/models/messagemodel.dart';
 import 'package:scare/models/usermodel.dart';
 import 'package:scare/presentation/components/homepagecomponents/opener.dart';
 import 'package:scare/presentation/utils/constants.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../bloc/Appusage bloc/app_usage_state.dart';
+import '../../bloc/chatroom bloc/chatroom_state.dart';
 import '../../bloc/graph_bloc/graph_bloc.dart';
 import '../../bloc/graph_bloc/graph_state.dart';
 import '../../bloc/language bloc/language_bloc.dart';
 import '../../bloc/language bloc/language_state.dart';
 import '../../data/userdata.dart';
+import '../components/homepagecomponents/chatpagecomponent.dart';
 import '../components/homepagecomponents/graphcard.dart';
 import '../components/homepagecomponents/userdatagraph.dart';
 
@@ -117,24 +121,27 @@ class _HomepageState extends State<Homepage> {
                                   onTap: (() {
                                     Scaffold.of(context).openDrawer();
                                   }),
-                                  child: SizedBox(
-                                      width: 80,
-                                      height: 80,
+                                  child: Container(
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.circle),
+                                      width: 70,
+                                      height: 70,
                                       child: Image.asset(
-                                        'assets/images/syes-01.png',
+                                        'assets/images/syes-03.png',
                                         fit: BoxFit.fill,
                                       ))),
                               Container(
                                 width: MediaQuery.of(context).size.width / 2,
                                 decoration: BoxDecoration(
-                                    color: Colors.black,
+                                    color: Colors.white,
                                     borderRadius: BorderRadius.circular(30)),
                                 child: Padding(
                                   padding: const EdgeInsets.all(15),
                                   child: Center(
                                     child: Text(
                                       widget.usernanme,
-                                      style: ktextstylewhite,
+                                      style: ktextstyle,
                                     ),
                                   ),
                                 ),
@@ -158,8 +165,49 @@ class _HomepageState extends State<Homepage> {
                                   style: ktextstylewhite,
                                 ),
                               ),
-                              Opener(
-                                userid: usernumber,
+                              BlocBuilder<ChatroomBloc, Chatroomstate>(
+                                builder: (context, state) {
+                                  if (state is ChatroomInitialState) {
+                                    return IconButton(
+                                      icon: const Icon(
+                                        Icons.mic,
+                                        size: 35,
+                                        color: Colors.white,
+                                      ),
+                                      onPressed: () {
+                                        // recordingService.initRecorder();
+                                        Scaffold.of(context).showBottomSheet(
+                                            (context) => ChatPage(
+                                                  userid: usernumber,
+                                                ));
+                                      },
+                                    );
+                                  } else {
+                                    return Opener(
+                                      iconButton: IconButton(
+                                        icon: const Icon(
+                                          Icons.close,
+                                          size: 35,
+                                          color: Colors.white,
+                                        ),
+                                        onPressed: () {
+                                          // recordingService.initRecorder();
+                                          Navigator.pop(context);
+                                          BlocProvider.of<ChatroomBloc>(context)
+                                              .add(InitializeChatevent(
+                                                  messageModel:
+                                                      const MessageModel(
+                                                          message: '',
+                                                          type: Messagetype
+                                                              .reciever,
+                                                          format: Messageformat
+                                                              .text)));
+                                        },
+                                      ),
+                                      userid: usernumber,
+                                    );
+                                  }
+                                },
                               )
                             ],
                           ),

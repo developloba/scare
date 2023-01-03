@@ -2,6 +2,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:scare/bloc/Appusage%20bloc/app_usage_bloc.dart';
 import 'package:scare/bloc/chatroom%20bloc/chatroom_bloc.dart';
 import 'package:scare/bloc/graph_bloc/graph_bloc.dart';
+import 'package:scare/bloc/iconbloc/iconbloc.dart';
 import 'package:scare/bloc/language%20bloc/language_bloc.dart';
 import 'package:scare/bloc/login%20bloc/loginbloc.dart';
 
@@ -11,9 +12,6 @@ import 'package:scare/data/repository.dart';
 import 'package:scare/data/userrepository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scare/models/usermodel.dart';
-import 'package:scare/presentation/components/homepagecomponents/appdarwer.dart';
-import 'package:scare/presentation/screens/homepage.dart';
 import 'package:scare/presentation/screens/loginpage.dart';
 import 'bloc/language bloc/language_state.dart';
 import 'locale/applocalization.dart';
@@ -47,6 +45,9 @@ class _StartingWidgetState extends State<StartingWidget> {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (context) => IconBloc(),
+          ),
           BlocProvider(create: ((context) => GraphBloc())),
           BlocProvider(create: ((context) => AppUsageBloc())),
           BlocProvider(

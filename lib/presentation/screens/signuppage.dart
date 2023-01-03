@@ -13,6 +13,7 @@ import '../../bloc/login bloc/loginbloc.dart';
 import '../../bloc/login bloc/loginstate.dart';
 import '../components/homepagecomponents/appdarwer.dart';
 import '../components/loginpage_components/datafield.dart';
+import '../utils/scale.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -46,7 +47,7 @@ class _SignupState extends State<Signup> {
                       'Recharge your Number',
                       'My Plans',
                       'My Usage',
-                      'Recahrge History',
+                      'Recharge History',
                       'Statement',
                       'Settings'
                     ],
@@ -104,6 +105,7 @@ class Loginbody extends StatelessWidget {
       inAsyncCall: spinner,
       child: Center(
         child: Container(
+            clipBehavior: Clip.antiAlias,
             height: MediaQuery.of(context).size.height / 1.5,
             width: MediaQuery.of(context).size.width / 1.5,
             decoration: BoxDecoration(
@@ -114,6 +116,8 @@ class Loginbody extends StatelessWidget {
               children: [
                 Text(
                   'Enter details below',
+                  textScaleFactor: ScaleSize.textScaleFactor(context),
+                  textAlign: TextAlign.center,
                   style: kmediumstyle,
                 ),
                 SizedBox(
@@ -141,7 +145,7 @@ class Loginbody extends StatelessWidget {
                     textEditingController: passwordcontrol,
                     hinttext: 'Enter your password here'),
                 SizedBox(
-                  width: 300,
+                  width: MediaQuery.of(context).size.width / 1.7,
                   height: 60,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -159,6 +163,8 @@ class Loginbody extends StatelessWidget {
                     }),
                     child: Text(
                       'Login',
+                      textScaleFactor: ScaleSize.textScaleFactor(context),
+                      textAlign: TextAlign.center,
                       style: kmediumstyle,
                     ),
                   ),
@@ -166,8 +172,10 @@ class Loginbody extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('New here? Create an account',
-                        style: TextStyle(
+                    Text('New here? Create an account',
+                        textScaleFactor: ScaleSize.textScaleFactor(context),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
                             fontFamily: 'Pop',
                             color: Colors.white,
                             fontSize: 18)),
@@ -180,8 +188,10 @@ class Loginbody extends StatelessWidget {
                           }),
                         );
                       },
-                      child: const Text('here',
-                          style: TextStyle(
+                      child: Text('here',
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
                               fontFamily: 'Euclid',
                               color: Color.fromARGB(255, 244, 139, 54),
                               fontSize: 18)),
@@ -191,8 +201,10 @@ class Loginbody extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Login with OTP',
-                        style: TextStyle(
+                    Text('Login with OTP',
+                        textScaleFactor: ScaleSize.textScaleFactor(context),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
                             fontFamily: 'Pop',
                             color: Colors.white,
                             fontSize: 18)),
@@ -205,8 +217,10 @@ class Loginbody extends StatelessWidget {
                           }),
                         );
                       },
-                      child: const Text('here',
-                          style: TextStyle(
+                      child: Text('here',
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
                               fontFamily: 'Euclid',
                               color: Color.fromARGB(255, 244, 139, 54),
                               fontSize: 18)),
@@ -215,6 +229,8 @@ class Loginbody extends StatelessWidget {
                 ),
                 Text(
                   errotext,
+                  textScaleFactor: ScaleSize.textScaleFactor(context),
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontFamily: 'Pop', color: Colors.red, fontSize: 18),
                 ),
@@ -232,6 +248,8 @@ class Loginbody extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           'or',
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
+                          textAlign: TextAlign.center,
                           style: kmediumstyle,
                         ),
                       ),

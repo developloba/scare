@@ -50,6 +50,7 @@ dependencies:
   syncfusion_flutter_charts: ^20.4.38
   fl_chart: ^0.55.2
   flutter_native_splash: ^2.2.16
+  flutter_screenutil:
 
 
 dev_dependencies:

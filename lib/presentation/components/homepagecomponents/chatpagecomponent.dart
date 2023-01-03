@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scare/bloc/chatroom%20bloc/chatroom_bloc.dart';
+import 'package:scare/bloc/chatroom%20bloc/chatroom_event.dart' as chat;
 import 'package:scare/bloc/chatroom%20bloc/chatroom_state.dart';
 
 import 'package:scare/models/messagemodel.dart';
@@ -25,12 +26,17 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<ChatroomBloc>(context).add(chat.Getmessages(
+        messageModel: const MessageModel(
+            message: '',
+            type: Messagetype.sender,
+            format: Messageformat.text)));
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 0.8,
+      height: MediaQuery.of(context).size.height - 500,
       decoration: const BoxDecoration(
         color: Color.fromARGB(255, 19, 25, 25),
         borderRadius: BorderRadius.only(

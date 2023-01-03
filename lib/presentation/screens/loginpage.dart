@@ -4,12 +4,11 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scare/bloc/sigin%20bloc/sigin_bloc.dart';
 import 'package:scare/bloc/sigin%20bloc/sigin_state.dart';
 import 'package:scare/models/usermodel.dart';
-import 'package:scare/presentation/screens/homepage.dart';
 import 'package:scare/presentation/screens/signuppage.dart';
 import 'package:scare/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:scare/presentation/utils/scale.dart';
 import '../../bloc/sigin bloc/sigin_events.dart';
-import '../components/homepagecomponents/appdarwer.dart';
 import '../components/loginpage_components/datafield.dart';
 
 class Loginpage extends StatefulWidget {
@@ -88,6 +87,7 @@ class SigninBody extends StatelessWidget {
       inAsyncCall: spinner,
       child: Center(
         child: Container(
+            clipBehavior: Clip.antiAlias,
             height: MediaQuery.of(context).size.height / 1.3,
             width: MediaQuery.of(context).size.width / 1.3,
             decoration: BoxDecoration(
@@ -99,6 +99,8 @@ class SigninBody extends StatelessWidget {
                 Text(
                   'Enter details below',
                   style: kmediumstyle,
+                  textScaleFactor: ScaleSize.textScaleFactor(context),
+                  textAlign: TextAlign.center,
                 ),
                 // Datafield(
                 //   textEditingController: usernamecontrol,
@@ -134,7 +136,7 @@ class SigninBody extends StatelessWidget {
                     textEditingController: passwordcontrol,
                     hinttext: 'Enter your password here'),
                 SizedBox(
-                  width: 300,
+                  width: MediaQuery.of(context).size.width / 1.7,
                   height: 60,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -155,36 +157,47 @@ class SigninBody extends StatelessWidget {
                     child: Text(
                       'Sign up',
                       style: kmediumstyle,
+                      textScaleFactor: ScaleSize.textScaleFactor(context),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Already have an account? Login',
-                        style: TextStyle(
-                            fontFamily: 'Pop',
-                            color: Colors.white,
-                            fontSize: 18)),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return const Signup();
-                          }),
-                        );
-                      },
-                      child: const Text('here',
-                          style: TextStyle(
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 1.3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Already have an account? Login',
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
                               fontFamily: 'Pop',
-                              color: Color.fromARGB(255, 244, 139, 54),
+                              color: Colors.white,
                               fontSize: 18)),
-                    )
-                  ],
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return const Signup();
+                            }),
+                          );
+                        },
+                        child: Text('here',
+                            textScaleFactor: ScaleSize.textScaleFactor(context),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontFamily: 'Pop',
+                                color: Color.fromARGB(255, 244, 139, 54),
+                                fontSize: 18)),
+                      )
+                    ],
+                  ),
                 ),
                 Text(
                   errortext,
+                  textScaleFactor: ScaleSize.textScaleFactor(context),
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontFamily: 'Pop', color: Colors.red, fontSize: 18),
                 ),
