@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
 
-TextStyle kmediumstyle =
-    const TextStyle(color: Colors.white, fontFamily: 'Pop', fontSize: 30);
-TextStyle kmediumstylebalck =
-    const TextStyle(color: Colors.black, fontFamily: 'Pop', fontSize: 30);
-TextStyle ksmallstyle =
-    const TextStyle(color: Colors.white, fontFamily: 'Pop', fontSize: 20);
+class Style {
+  static late MediaQueryData mediaQueryData;
+  void init(BuildContext context) {
+    mediaQueryData = MediaQuery.of(context);
+  }
+
+  TextStyle kmediumstyle = TextStyle(
+      color: Colors.white,
+      fontFamily: 'Pop',
+      fontSize: mediaQueryData.size.height / 50);
+  TextStyle kmediumstylebalck = TextStyle(
+      color: Colors.black,
+      fontFamily: 'Pop',
+      fontSize: mediaQueryData.size.height / 50);
+  TextStyle ksmallstyle = TextStyle(
+      color: Colors.white,
+      fontFamily: 'Pop',
+      fontSize: mediaQueryData.size.height / 55);
+  TextStyle ksmallstyleblack = TextStyle(
+      color: Colors.black,
+      fontFamily: 'Pop',
+      fontSize: mediaQueryData.size.height / 55);
+}
+
 const kPrimarycolor = Color.fromARGB(255, 244, 139, 54);
 const kSecondarycolor = Color.fromARGB(245, 220, 176, 1);
 const kTetiarycolor = Color.fromARGB(19, 25, 25, 1);

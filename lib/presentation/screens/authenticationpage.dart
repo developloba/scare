@@ -20,6 +20,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   @override
   Widget build(BuildContext context) {
     String userNumber = widget.data.number;
+    Style.mediaQueryData = MediaQuery.of(context);
+    Style style = Style();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -33,7 +35,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             children: [
               Text(
                 'Enter Code sent to $userNumber here',
-                style: kmediumstylebalck,
+                style: style.kmediumstylebalck,
                 textAlign: TextAlign.center,
               ),
               SizedBox(

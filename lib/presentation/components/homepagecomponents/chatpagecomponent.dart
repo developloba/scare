@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+
 import 'package:scare/bloc/chatroom%20bloc/chatroom_bloc.dart';
 import 'package:scare/bloc/chatroom%20bloc/chatroom_event.dart' as chat;
 import 'package:scare/bloc/chatroom%20bloc/chatroom_state.dart';
@@ -23,6 +25,7 @@ class _ChatPageState extends State<ChatPage> {
   final listViewBloc = StreamController<List<MessageModel>>();
   final StreamController<String> nullcontroller = StreamController<String>();
 
+  late StreamSubscription<bool> keyboardSubscription;
   @override
   void initState() {
     super.initState();
@@ -34,9 +37,51 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   @override
+  void dispose() {
+    keyboardSubscription.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyboardVisibilityBuilder(
+      builder: (context, isKeyboardVisible) {
+        if (isKeyboardVisible == false) {
+          return ChatPageComponent(
+            controls: controls,
+            widget: widget,
+            scale: 0.78,
+          );
+        } else {
+          return ChatPageComponent(
+              controls: controls, widget: widget, scale: 0.48);
+        }
+      },
+    );
+  }
+}
+
+class ChatPageComponent extends StatefulWidget {
+  const ChatPageComponent(
+      {Key? key,
+      required this.controls,
+      required this.widget,
+      required this.scale})
+      : super(key: key);
+
+  final TextEditingController controls;
+  final ChatPage widget;
+  final double scale;
+
+  @override
+  State<ChatPageComponent> createState() => _ChatPageComponentState();
+}
+
+class _ChatPageComponentState extends State<ChatPageComponent> {
+  @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height - 500,
+      height: MediaQuery.of(context).size.height * widget.scale,
       decoration: const BoxDecoration(
         color: Color.fromARGB(255, 19, 25, 25),
         borderRadius: BorderRadius.only(
@@ -45,7 +90,7 @@ class _ChatPageState extends State<ChatPage> {
       child: Column(
         children: [
           Expanded(
-              flex: 10,
+              flex: 12,
               child: Padding(
                 padding: const EdgeInsets.only(top: 30),
                 child: BlocBuilder<ChatroomBloc, Chatroomstate>(
@@ -63,14 +108,17 @@ class _ChatPageState extends State<ChatPage> {
                   },
                 ),
               )),
-          TextInputField(
-              controls: controls,
-              widget: widget,
-              listeningicon: Icons.mic_off,
-              function: (() {
-                // BlocProvider.of<RecordingBloc>(context)
-                //     .add(StartRecordingEvent());
-              }))
+          Expanded(
+            flex: 3,
+            child: TextInputField(
+                controls: widget.controls,
+                widget: widget.widget,
+                listeningicon: Icons.mic_off,
+                function: (() {
+                  // BlocProvider.of<RecordingBloc>(context)
+                  //     .add(StartRecordingEvent());
+                })),
+          )
         ],
       ),
     );

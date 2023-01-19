@@ -7,6 +7,9 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Style.mediaQueryData = MediaQuery.of(context);
+    Style style = Style();
+
     TextEditingController authfieldcontroller = TextEditingController();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -20,7 +23,7 @@ class OtpScreen extends StatelessWidget {
             children: [
               Text(
                 'Enter Phone number here',
-                style: kmediumstylebalck,
+                style: style.kmediumstylebalck,
                 textAlign: TextAlign.center,
               ),
               SizedBox(

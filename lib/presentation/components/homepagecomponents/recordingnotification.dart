@@ -14,7 +14,7 @@ class AppNotification extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Text(
           message,
-          style: kmediumstyle,
+          style: Style().kmediumstyle,
         ),
       ),
     );

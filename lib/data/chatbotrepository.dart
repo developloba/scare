@@ -6,7 +6,8 @@ import 'package:scare/models/messagemodel.dart';
 class ChatbotRepository {
   addChatBotMessage(MessageModel message) async {
     Response response = await post(
-        Uri.parse('http://8b64-197-210-227-220.ngrok.io/webhooks/rest/webhook'),
+        Uri.parse(
+            'http://9890-197-210-84-111.eu.ngrok.io/webhooks/rest/webhook'),
         headers: <String, String>{
           'Content-type': 'application/json; charset=UTF-8',
         },

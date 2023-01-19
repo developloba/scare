@@ -33,42 +33,46 @@ class _UserDataGraphState extends State<UserDataGraph> {
     return BlocBuilder<GraphBloc, GraphState>(
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Card(
-              color: Colors.black,
-              elevation: 15,
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  DataChart(
-                      title: widget.title[widget.index],
-                      ktextstylewhite: widget.ktextstylewhite,
-                      data: widget.data),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GraphButton(
-                        text: 'Data',
-                        selected: widget.selected,
-                        index: 0,
-                      ),
-                      GraphButton(
-                        text: 'Voice',
-                        selected: widget.selected,
-                        index: 1,
-                      ),
-                      GraphButton(
-                        text: 'Sms',
-                        selected: widget.selected,
-                        index: 2,
-                      )
-                    ],
-                  )
-                ],
-              )),
+          padding: const EdgeInsets.all(10.0),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height / 2,
+            width: MediaQuery.of(context).size.width,
+            child: Card(
+                color: Colors.black,
+                elevation: 15,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    DataChart(
+                        title: widget.title[widget.index],
+                        ktextstylewhite: widget.ktextstylewhite,
+                        data: widget.data),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GraphButton(
+                          text: 'Data',
+                          selected: widget.selected,
+                          index: 0,
+                        ),
+                        GraphButton(
+                          text: 'Voice',
+                          selected: widget.selected,
+                          index: 1,
+                        ),
+                        GraphButton(
+                          text: 'Sms',
+                          selected: widget.selected,
+                          index: 2,
+                        )
+                      ],
+                    )
+                  ],
+                )),
+          ),
         );
       },
     );

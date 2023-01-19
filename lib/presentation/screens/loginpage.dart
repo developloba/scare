@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scare/bloc/sigin%20bloc/sigin_bloc.dart';
 import 'package:scare/bloc/sigin%20bloc/sigin_state.dart';
@@ -7,7 +6,6 @@ import 'package:scare/models/usermodel.dart';
 import 'package:scare/presentation/screens/signuppage.dart';
 import 'package:scare/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:scare/presentation/utils/scale.dart';
 import '../../bloc/sigin bloc/sigin_events.dart';
 import '../components/loginpage_components/datafield.dart';
 
@@ -25,6 +23,7 @@ class _LoginpageState extends State<Loginpage> {
   TextEditingController phonecontrol = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    Style.mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 245, 220, 176),
@@ -62,7 +61,7 @@ class _LoginpageState extends State<Loginpage> {
   }
 }
 
-class SigninBody extends StatelessWidget {
+class SigninBody extends StatefulWidget {
   const SigninBody(
       {Key? key,
       required this.usernamecontrol,
@@ -81,15 +80,22 @@ class SigninBody extends StatelessWidget {
   final String errortext;
 
   @override
+  State<SigninBody> createState() => _SigninBodyState();
+}
+
+class _SigninBodyState extends State<SigninBody> {
+  @override
+  @override
   Widget build(BuildContext context) {
-    String number = '';
+    Style.mediaQueryData = MediaQuery.of(context);
+    Style style = Style();
     return ModalProgressHUD(
-      inAsyncCall: spinner,
+      inAsyncCall: widget.spinner,
       child: Center(
         child: Container(
             clipBehavior: Clip.antiAlias,
-            height: MediaQuery.of(context).size.height / 1.3,
-            width: MediaQuery.of(context).size.width / 1.3,
+            height: MediaQuery.of(context).size.height / 1.5,
+            width: MediaQuery.of(context).size.width / 1.5,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: const Color.fromARGB(255, 64, 50, 23)),
@@ -98,8 +104,7 @@ class SigninBody extends StatelessWidget {
               children: [
                 Text(
                   'Enter details below',
-                  style: kmediumstyle,
-                  textScaleFactor: ScaleSize.textScaleFactor(context),
+                  style: style.kmediumstyle,
                   textAlign: TextAlign.center,
                 ),
                 // Datafield(
@@ -111,33 +116,38 @@ class SigninBody extends StatelessWidget {
                 //   hinttext: 'Enter your email here',
                 //   inputype: TextInputType.emailAddress,
                 // ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 1.7,
-                  child: IntlPhoneField(
-                    initialCountryCode: 'NG',
-                    onChanged: (phone) {
-                      number = phone.completeNumber;
-                    },
-                    controller: phonecontrol,
-                    decoration: InputDecoration(
-                        hintText: 'Enter your number here',
-                        filled: true,
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(color: Colors.white)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(color: Colors.white))),
-                  ),
-                ),
+                // SizedBox(
+                //   width: MediaQuery.of(context).size.width / 1.7,
+                //   height: MediaQuery.of(context).size.height / 10,
+                //   child: IntlPhoneField(
+                //     initialCountryCode: 'NG',
+                //     onChanged: (phone) {
+                //       number = phone.completeNumber;
+                //     },
+                //     controller: widget.phonecontrol,
+                //     decoration: InputDecoration(
+                //         hintText: 'Enter your number here',
+                //         filled: true,
+                //         fillColor: Colors.white,
+                //         focusedBorder: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(30),
+                //             borderSide: const BorderSide(color: Colors.white)),
+                //         enabledBorder: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(30),
+                //             borderSide: const BorderSide(color: Colors.white))),
+                //   ),
+                // ),
+                Datafield(
+                    obsuretext: false,
+                    textEditingController: widget.phonecontrol,
+                    hinttext: 'Enter your phone number here'),
                 Datafield(
                     obsuretext: true,
-                    textEditingController: passwordcontrol,
+                    textEditingController: widget.passwordcontrol,
                     hinttext: 'Enter your password here'),
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 1.7,
-                  height: 60,
+                  height: MediaQuery.of(context).size.height / 15,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         elevation: 0,
@@ -148,16 +158,15 @@ class SigninBody extends StatelessWidget {
                     onPressed: (() {
                       BlocProvider.of<Siginupbloc>(context).add(CreateUserEvent(
                           data: Usermodel(
-                        password: passwordcontrol.text,
-                        number: number,
+                        password: widget.passwordcontrol.text.trim(),
+                        number: widget.phonecontrol.text.trim(),
                       )));
-                      passwordcontrol.clear();
-                      phonecontrol.clear();
+                      // widget.passwordcontrol.clear();
+                      // widget.phonecontrol.clear();
                     }),
                     child: Text(
                       'Sign up',
-                      style: kmediumstyle,
-                      textScaleFactor: ScaleSize.textScaleFactor(context),
+                      style: style.kmediumstyle,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -167,13 +176,12 @@ class SigninBody extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Already have an account? Login',
-                          textScaleFactor: ScaleSize.textScaleFactor(context),
+                      const Text('Login',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontFamily: 'Pop',
-                              color: Colors.white,
-                              fontSize: 18)),
+                          style: TextStyle(
+                            fontFamily: 'Pop',
+                            color: Colors.white,
+                          )),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
@@ -183,10 +191,9 @@ class SigninBody extends StatelessWidget {
                             }),
                           );
                         },
-                        child: Text('here',
-                            textScaleFactor: ScaleSize.textScaleFactor(context),
+                        child: const Text('here',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontFamily: 'Pop',
                                 color: Color.fromARGB(255, 244, 139, 54),
                                 fontSize: 18)),
@@ -195,8 +202,7 @@ class SigninBody extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  errortext,
-                  textScaleFactor: ScaleSize.textScaleFactor(context),
+                  widget.errortext,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontFamily: 'Pop', color: Colors.red, fontSize: 18),
@@ -215,7 +221,7 @@ class SigninBody extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           'or',
-                          style: kmediumstyle,
+                          style: style.kmediumstyle,
                         ),
                       ),
                       const Expanded(

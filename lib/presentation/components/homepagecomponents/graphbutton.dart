@@ -40,21 +40,11 @@ class _GraphButtonState extends State<GraphButton> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15))),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          widget.text,
-          style: widget.selected[widget.index]
-              ? const TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Pop',
-                  color: Colors.white,
-                )
-              : const TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Pop',
-                  color: Colors.black,
-                ),
-        ),
+        padding: const EdgeInsets.all(3.0),
+        child: Text(widget.text,
+            style: widget.selected[widget.index]
+                ? Style().ksmallstyle
+                : Style().ksmallstyleblack),
       ),
     );
   }

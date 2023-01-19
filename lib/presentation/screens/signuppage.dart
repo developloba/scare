@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:scare/bloc/login%20bloc/loginevent.dart';
 import 'package:scare/models/usermodel.dart';
@@ -13,7 +12,6 @@ import '../../bloc/login bloc/loginbloc.dart';
 import '../../bloc/login bloc/loginstate.dart';
 import '../components/homepagecomponents/appdarwer.dart';
 import '../components/loginpage_components/datafield.dart';
-import '../utils/scale.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -24,7 +22,9 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   @override
+  @override
   Widget build(BuildContext context) {
+    Style.mediaQueryData = MediaQuery.of(context);
     TextEditingController passwordcontrol = TextEditingController();
     TextEditingController phonecontrol = TextEditingController();
     return Scaffold(
@@ -39,32 +39,11 @@ class _SignupState extends State<Signup> {
                 spinner: true);
           } else if (state is Loadedstate) {
             return Scaffold(
-                drawer: AppDrawer(
-                    userdata: state.data,
-                    usernumber: state.number,
-                    drawerText: const [
-                      'Profile & Settings',
-                      'Recharge your Number',
-                      'My Plans',
-                      'My Usage',
-                      'Recharge History',
-                      'Statement',
-                      'Settings'
-                    ],
-                    drawerIcons: const [
-                      Icons.account_circle,
-                      Icons.currency_exchange,
-                      Icons.aod,
-                      Icons.energy_savings_leaf,
-                      Icons.update,
-                      Icons.label_important,
-                      Icons.settings
-                    ]),
                 body: Homepage(
-                  data: state.data,
-                  usernumber: state.number,
-                  usernanme: state.name,
-                ));
+              data: state.data,
+              usernumber: state.number,
+              usernanme: state.name,
+            ));
           } else if (state is Errorstate) {
             return Loginbody(
               phonecontrol: phonecontrol,
@@ -100,7 +79,9 @@ class Loginbody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String number = '';
+    Style.mediaQueryData = MediaQuery.of(context);
+    Style style = Style();
+
     return ModalProgressHUD(
       inAsyncCall: spinner,
       child: Center(
@@ -116,37 +97,41 @@ class Loginbody extends StatelessWidget {
               children: [
                 Text(
                   'Enter details below',
-                  textScaleFactor: ScaleSize.textScaleFactor(context),
                   textAlign: TextAlign.center,
-                  style: kmediumstyle,
+                  style: style.kmediumstyle,
                 ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 1.7,
-                  child: IntlPhoneField(
-                    initialCountryCode: 'NG',
-                    onChanged: (phone) {
-                      number = phone.completeNumber;
-                    },
-                    controller: phonecontrol,
-                    decoration: InputDecoration(
-                        hintText: 'Enter your number here',
-                        filled: true,
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(color: Colors.white)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(color: Colors.white))),
-                  ),
-                ),
+                // SizedBox(
+                //   width: MediaQuery.of(context).size.width / 1.7,
+                //   height: MediaQuery.of(context).size.height / 10,
+                //   child: IntlPhoneField(
+                //     initialCountryCode: 'NG',
+                //     onChanged: (phone) {
+                //       number = phone.completeNumber;
+                //     },
+                //     controller: phonecontrol,
+                //     decoration: InputDecoration(
+                //         hintText: 'Enter your number here',
+                //         filled: true,
+                //         fillColor: Colors.white,
+                //         focusedBorder: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(30),
+                //             borderSide: const BorderSide(color: Colors.white)),
+                //         enabledBorder: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(30),
+                //             borderSide: const BorderSide(color: Colors.white))),
+                //   ),
+                // ),
+                Datafield(
+                    obsuretext: false,
+                    textEditingController: phonecontrol,
+                    hinttext: 'Enter your phone number here'),
                 Datafield(
                     obsuretext: true,
                     textEditingController: passwordcontrol,
                     hinttext: 'Enter your password here'),
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 1.7,
-                  height: 60,
+                  height: MediaQuery.of(context).size.height / 15,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         elevation: 0,
@@ -157,28 +142,23 @@ class Loginbody extends StatelessWidget {
                     onPressed: (() {
                       BlocProvider.of<Loginbloc>(context).add(LoginUserEvent(
                           data: Usermodel(
-                              number: number, password: passwordcontrol.text)));
-                      passwordcontrol.clear();
-                      phonecontrol.clear();
+                              number: phonecontrol.text,
+                              password: passwordcontrol.text)));
+                      // passwordcontrol.clear();
+                      // phonecontrol.clear();
                     }),
                     child: Text(
                       'Login',
-                      textScaleFactor: ScaleSize.textScaleFactor(context),
                       textAlign: TextAlign.center,
-                      style: kmediumstyle,
+                      style: style.kmediumstyle,
                     ),
                   ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('New here? Create an account',
-                        textScaleFactor: ScaleSize.textScaleFactor(context),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontFamily: 'Pop',
-                            color: Colors.white,
-                            fontSize: 18)),
+                    Text('Create an account',
+                        textAlign: TextAlign.center, style: style.kmediumstyle),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -188,10 +168,9 @@ class Loginbody extends StatelessWidget {
                           }),
                         );
                       },
-                      child: Text('here',
-                          textScaleFactor: ScaleSize.textScaleFactor(context),
+                      child: const Text('here',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontFamily: 'Euclid',
                               color: Color.fromARGB(255, 244, 139, 54),
                               fontSize: 18)),
@@ -201,10 +180,9 @@ class Loginbody extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Login with OTP',
-                        textScaleFactor: ScaleSize.textScaleFactor(context),
+                    const Text('Login with OTP',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontFamily: 'Pop',
                             color: Colors.white,
                             fontSize: 18)),
@@ -217,10 +195,9 @@ class Loginbody extends StatelessWidget {
                           }),
                         );
                       },
-                      child: Text('here',
-                          textScaleFactor: ScaleSize.textScaleFactor(context),
+                      child: const Text('here',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontFamily: 'Euclid',
                               color: Color.fromARGB(255, 244, 139, 54),
                               fontSize: 18)),
@@ -229,7 +206,6 @@ class Loginbody extends StatelessWidget {
                 ),
                 Text(
                   errotext,
-                  textScaleFactor: ScaleSize.textScaleFactor(context),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontFamily: 'Pop', color: Colors.red, fontSize: 18),
@@ -248,9 +224,8 @@ class Loginbody extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           'or',
-                          textScaleFactor: ScaleSize.textScaleFactor(context),
                           textAlign: TextAlign.center,
-                          style: kmediumstyle,
+                          style: style.kmediumstyle,
                         ),
                       ),
                       const Expanded(

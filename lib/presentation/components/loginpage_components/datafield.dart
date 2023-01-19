@@ -22,6 +22,7 @@ class _DatafieldState extends State<Datafield> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 1.7,
+      height: MediaQuery.of(context).size.height / 10,
       child: TextField(
         maxLength: 15,
         obscureText: widget.obsuretext,

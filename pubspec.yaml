@@ -51,6 +51,8 @@ dependencies:
   fl_chart: ^0.55.2
   flutter_native_splash: ^2.2.16
   flutter_screenutil:
+  flutter_keyboard_visibility: ^5.4.0
+
 
 
 dev_dependencies:

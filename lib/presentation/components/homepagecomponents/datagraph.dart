@@ -18,6 +18,7 @@ class DataChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
+        plotAreaBorderWidth: 0,
         title: ChartTitle(text: title, textStyle: ktextstylewhite),
         primaryXAxis: CategoryAxis(),
         series: <LineSeries<UserData, String>>[
